@@ -1,51 +1,47 @@
 # Kelio darbų valdymas
 
-Esamo demonstracinio prototipo paketas „GitHub“ ir „GitHub Pages“. Dizainas, pavyzdiniai duomenys ir sąveikos perkelti iš „Sites“ prototipo. Eksportuota 2026-10-30.
+Statinė interaktyvi kelių darbų valdymo aplikacija su pavyzdiniais duomenimis.
 
-## Greitas įkėlimas į „GitHub Pages“
+## Paleidimas
 
-1. Išskleiskite ZIP kompiuteryje.
-2. „GitHub“ sukurkite saugyklą (repository), pvz., `kelio-darbu-valdymas`.
-3. Į `main` šaką įkelkite **šio aplanko turinį**, o ne patį aplanką ar ZIP. Būtina įkelti ir paslėptą `.github` aplanką, kuriame yra `workflows/pages.yml`.
-4. Saugykloje atverkite **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-5. Atverkite **Actions → Publish GitHub Pages → Run workflow**, jei pradinis paleidimas neįvyko automatiškai. Pasirinkite `main` šaką.
-6. Kai procesas baigsis sėkmingai, svetainės nuorodą rasite **Settings → Pages** ir proceso `github-pages` aplinkoje.
+Atidarykite `index.html` naršyklėje arba pateikite abu failus (`index.html`, `app.js`) per statinį serverį. Išorinių bibliotekų ar diegimo nereikia.
 
-Kiekvienas vėlesnis įkėlimas į `main` šaką atnaujins svetainę automatiškai. Santykiniai išteklių adresai leidžia paketą naudoti tiek projekto poaplankyje, tiek nuosavame domene.
+## GitHub Pages
 
-Jei `.github` aplankas failų pasirinkimo lange nematomas, „Windows“ failų naršyklėje įjunkite paslėptų elementų rodymą arba įkelkite paketą per „GitHub Desktop“.
+1. Išarchyvuokite paketą.
+2. Repozitorijos šaknyje pakeiskite esamą `index.html` ir įkelkite `app.js` bei `.nojekyll`.
+3. GitHub Pages nustatymuose parinkite publikavimą iš atitinkamos šakos šakninio katalogo.
+4. Atnaujinę puslapį prireikus paspauskite Ctrl+F5.
 
-## Paleidimas kompiuteryje
+Abu aplikacijos failai turi būti tame pačiame kataloge. Paketui tinka projekto adresas su bet kokiu katalogo pavadinimu. Tiesioginė projekto nuoroda: `#project-control`.
 
-Reikalingas „Node.js“ 22.13 arba naujesnis.
+## Veikiantys procesai
 
-```bash
-npm ci
-npm run dev
-```
+- Projektai: registravimas, sutarties duomenys, patvirtinta sąmata ir atsakingi asmenys.
+- Projekto valdymas: etapų eiga, sutarties vertė, faktinės pajamos, einamosios sąnaudos ir rezultatas.
+- Dienos žurnalas: kiekis, darbuotojų valandos, DU įkainis ir sąnaudos, medžiagos, technika, motovalandos ir pastabos.
+- Įrašo eiga: juodraštis → laukia tvirtinimo → patvirtinta arba grąžinta tikslinti.
+- Tik patvirtinti įrašai atnaujina kiekius, sąnaudas ir projekto eigą. Pakartotinis tvirtinimas nedubliuoja sąnaudų.
+- Pajamų registras: aktas ar kitas pajamų pagrindas; patvirtintos pajamos atskirtos nuo sutarties vertės.
+- Įsipareigojimai: užsakytos, dar neįtrauktos į faktą sumos pagal sąnaudų kategoriją. Jos yra likusių darbų įvertinimo dalis. Atskiras redagavimas su priežastimi, mažinimas tvirtinant faktą ir istorijos fiksavimas.
+- Rezervas: sąmata minus užbaigimo prognozė. Rodomas atskirai projekto suvestinėje, sąmatoje ir portfelio prognozės struktūroje. Sąmatos viršijimas žymimas atskirai; teigiamas rezervas tokiu atveju lygus nuliui.
+- Sąmata ir prognozė: prognozė = patvirtintas faktas + įsipareigota + kitos likusių darbų sąnaudos. Įsipareigojimai papildomai nepadidina bendro likusių darbų įvertinimo. Tvirtinant faktą, likusių darbų įvertinimas atitinkamai mažinamas iki nulio.
+- Laikotarpio kontrolė: medžiagų kiekiai ir sumos, DU valandos ir sumos, technikos motovalandos ir sumos, pajamos ir einamasis rezultatas.
+- Gantt ir darbų sąrašas: etapų redagavimas ir brigados / technikos rezervacijų konfliktų tikrinimas.
+- Dokumentai: registro kortelės, failų įkėlimas iki 2 MB, versijos, tvirtinimas ir atsisiuntimas.
+- Sąmatos būsenos užfiksavimas, projekto pakeitimų istorija, CSV eksportai ir ataskaitos spausdinimas.
+- Nustatymai: duomenų kopijos atsisiuntimas ir pradinių pavyzdinių duomenų atkūrimas.
 
-Atverkite terminale parodytą vietinį adresą.
+## Duomenų režimas
 
-## Paruošimas talpinimui
+Duomenys saugomi tos pačios naršyklės localStorage. Nėra serverio, bendros duomenų bazės, tikro prisijungimo, integracijų, darbo užmokesčio skaičiavimo ar banko operacijų. Nustatymai aiškiai nurodo šį režimą. Pajamų įrašai skirti projekto operacinei kontrolei; apmokėjimai čia neapskaitomi.
 
-```bash
-npm run build
-npm run preview
-```
+Visi pradiniai objektai ir asmenys yra pavyzdiniai. Pradiniai dokumentai yra aiškiai pažymėtos registro kortelės, ne tariami originalai. Įkėlus tikrą failą, atsisiunčiamas būtent tas failas.
 
-`npm run build` patikrina TypeScript ir sukuria `dist/` aplanką. Jį galima talpinti bet kuriame statinių svetainių serveryje. ZIP pridėtas `docs/` aplankas yra jau sukompiliuota versija: norint publikuoti be „Actions“, galima „Settings → Pages“ pasirinkti **Deploy from a branch → main → /docs**. Redagavus kodą, `docs/` versiją reikia iš naujo atnaujinti iš `dist/`; rekomenduojamas automatinis „Actions“ būdas.
+## Tikrinimas ir publikavimas
 
-## Paketo turinys
+- `node --check app.js`
+- `node tests/project-workflow.cjs`
+- `node scripts/build-static.mjs`
 
-- `src/App.tsx` – esamo prototipo sąsaja ir demonstracinė logika.
-- `src/styles.css` – esamo prototipo stiliai.
-- `index.html`, `favicon.svg` – pradinis puslapis ir piktograma.
-- `package.json`, `package-lock.json` – užfiksuotos priklausomybės.
-- `.github/workflows/pages.yml` – automatinis publikavimas.
-- `docs/` – paruošta statinė versija.
-
-## Demonstracijos ribos
-
-Tai demonstracinė aplikacija su sintetiniais duomenimis. Išsaugoti esami perjungimai, filtravimas, įrašo peržiūra ir ROI skaičiuoklė. Dalis mygtukų tik parodo demonstracinį pranešimą. Nėra veikiančios apskaitos integracijos, bendros duomenų bazės, realaus dokumentų įkėlimo ar naudotojų autentifikacijos; pakeitimai nėra išsaugomi po puslapio perkrovimo.
-
-„GitHub Pages“ versija neturi „Sites“ darbo srities prieigos kontrolės. Viešai paskelbtą puslapį gali atverti kiekvienas, turintis nuorodą; privati kodo saugykla savaime nereiškia privataus „Pages“ puslapio.
+Sites publikavimui šaltiniai kopijuojami į `dist/`; projekto tapatybė ir prieigos nustatymai išlaikomi.
